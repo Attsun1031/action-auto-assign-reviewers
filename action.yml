@@ -1,0 +1,17 @@
+name: 'Auto assign reviewers'
+description: 'Assign PR reviewers automatically from commits.'
+inputs:
+  pull-request-number:
+    description: 'Number of target pull request'
+runs:
+  using: "composite"
+  steps:
+    - name: Assign reviewers
+      id: assign_reviewers
+      # SEE: https://github.com/actions/github-script
+      uses: actions/github-script@v5
+      with:
+        script: |
+          const script = require('./auto-assign-reviewers.js')
+          script({github, context, ${{ inputs.pull-request-number }})
+
