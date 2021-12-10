@@ -1,2 +1,2 @@
-# create-pr-auto-assign-reviewer
-A Github action to create github PR and automatically assign reviewers from commits.
+# action-auto-assign-reviewers
+A Github action to assign PR reviewers automatically from commits.
