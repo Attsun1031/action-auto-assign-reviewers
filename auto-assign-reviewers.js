@@ -1,4 +1,4 @@
-module.exports = ({github, context, prNum}) => {
+module.exports = (github, context, prNum) => {
   // List related commits
   const response = await github.rest.pulls.listCommits({
     owner: context.repo.owner,

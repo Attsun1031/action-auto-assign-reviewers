@@ -13,5 +13,5 @@ runs:
       with:
         script: |
           const script = require('./auto-assign-reviewers.js')
-          script({ github, context, ${{ inputs.pull-request-number }} })
+          await script(github, context, ${{ inputs.pull-request-number }})
 
