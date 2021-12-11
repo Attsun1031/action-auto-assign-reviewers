@@ -12,6 +12,8 @@ runs:
       uses: actions/github-script@v5
       with:
         script: |
+          console.log("Start Auto assing reviewers action. pull-request-number=${{ inputs.pull-request-number }}")
+
           // List related commits
           const response = await github.rest.pulls.listCommits({
             owner: context.repo.owner,
