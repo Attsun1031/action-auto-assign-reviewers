@@ -39,8 +39,8 @@ runs:
           const review_request_response = await github.rest.pulls.requestReviewers({
             owner: context.repo.owner,
             repo: context.repo.repo,
+            reviewers: reviewer_logins,
             pull_number: ${{ inputs.pull-request-number }}
-            reviewers: reviewer_logins
           })
           console.log(review_request_response)
 
