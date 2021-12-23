@@ -3,6 +3,8 @@ description: 'Assign PR reviewers automatically from commits.'
 inputs:
   pull-request-number:
     description: 'Number of target pull request'
+  ignore-users:
+    description: 'A comma separated list of usernames that are ignored'
 runs:
   using: "composite"
   steps:
@@ -13,6 +15,8 @@ runs:
       with:
         script: |
           console.log("Start Auto assing reviewers action. pull-request-number=${{ inputs.pull-request-number }}")
+
+          const ignoreUsers = "${{ inputs.ignore-users }}".split(",").map(s => s.trim()).filter(x => x !== "")
 
           // List related commits
           const response = await github.rest.pulls.listCommits({
@@ -29,7 +33,7 @@ runs:
           const commits = response.data
           const reviewer_logins = []
           for (const cm of commits) {
-            if (!reviewer_logins.includes(cm.author.login)) {
+            if (!reviewer_logins.includes(cm.author.login) && !ignoreUsers.includes(cm.author.login)) {
               reviewer_logins.push(cm.author.login)
             }
           }
