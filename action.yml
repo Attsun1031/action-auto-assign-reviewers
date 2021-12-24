@@ -33,6 +33,10 @@ runs:
           const commits = response.data
           const reviewer_logins = []
           for (const cm of commits) {
+            if (cm.author === undefined || cm.author === null || cm.author.login === undefined || cm.author.login === null) {
+              continue
+            }
+
             if (!reviewer_logins.includes(cm.author.login) && !ignoreUsers.includes(cm.author.login)) {
               reviewer_logins.push(cm.author.login)
             }
