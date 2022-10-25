@@ -18,6 +18,13 @@ runs:
 
           const ignoreUsers = "${{ inputs.ignore-users }}".split(",").map(s => s.trim()).filter(x => x !== "")
 
+          const pr = await github.rest.pulls.get({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            pull_number: ${{ inputs.pull-request-number }}
+          })
+          console.log(pr.user.login);
+
           // List related commits
           const response = await github.rest.pulls.listCommits({
             owner: context.repo.owner,
