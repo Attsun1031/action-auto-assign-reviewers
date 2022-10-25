@@ -18,6 +18,7 @@ runs:
 
           const ignoreUsers = "${{ inputs.ignore-users }}".split(",").map(s => s.trim()).filter(x => x !== "")
 
+          // Get PR
           const responseGetPr = await github.rest.pulls.get({
             owner: context.repo.owner,
             repo: context.repo.repo,
@@ -28,7 +29,10 @@ runs:
           }
           const pr = responseGetPr.data
           console.log(pr);
-          console.log(pr.user.login);
+          if (pr.user !== null) {
+            // Ignore PR author
+            ignoreUsers.push(pr.user.login)
+          }
 
           // List related commits
           const response = await github.rest.pulls.listCommits({
@@ -43,24 +47,29 @@ runs:
 
           // List commiters
           const commits = response.data
-          const reviewer_logins = []
+          const reviewerLogins = []
           for (const cm of commits) {
-            if (cm.author === undefined || cm.author === null || cm.author.login === undefined || cm.author.login === null) {
+            const commiter = cm.author.login
+            if (cm.author === undefined || cm.author === null || commiter === undefined || commiter === null) {
               continue
             }
 
-            if (!reviewer_logins.includes(cm.author.login) && !ignoreUsers.includes(cm.author.login)) {
-              reviewer_logins.push(cm.author.login)
+            if (!reviewerLogins.includes(commiter) && !ignoreUsers.includes(commiter)) {
+              reviewerLogins.push(commiter)
             }
           }
-          console.log("Reviewers: ", reviewer_logins)
+          console.log("Reviewers: ", reviewerLogins)
 
-          // Assign commiters as reviewer
-          const review_request_response = await github.rest.pulls.requestReviewers({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            reviewers: reviewer_logins,
-            pull_number: ${{ inputs.pull-request-number }}
-          })
-          console.log(review_request_response)
+          if (reviewerLogins.length > 0) {
+            // Assign commiters as reviewer
+            const review_request_response = await github.rest.pulls.requestReviewers({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              reviewers: reviewerLogins,
+              pull_number: ${{ inputs.pull-request-number }}
+            })
+            console.log(review_request_response)
+          } else {
+            console.log("No reviewers found")
+          }
 
