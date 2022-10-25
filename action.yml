@@ -11,7 +11,7 @@ runs:
     - name: Assign reviewers
       id: assign_reviewers
       # SEE: https://github.com/actions/github-script
-      uses: actions/github-script@v5
+      uses: actions/github-script@v6
       with:
         script: |
           console.log("Start Auto assing reviewers action. pull-request-number=${{ inputs.pull-request-number }}")
