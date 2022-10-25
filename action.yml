@@ -23,6 +23,7 @@ runs:
             repo: context.repo.repo,
             pull_number: ${{ inputs.pull-request-number }}
           })
+          console.log(pr);
           console.log(pr.user.login);
 
           // List related commits
