@@ -42,7 +42,7 @@ runs:
           })
           console.log(response)
           if (response.status !== 200) {
-            throw new Error(`status is ${response.status}`)
+            throw new Error(`Failed to list commits. Status is ${response.status}`)
           }
 
           // List commiters
