@@ -18,11 +18,15 @@ runs:
 
           const ignoreUsers = "${{ inputs.ignore-users }}".split(",").map(s => s.trim()).filter(x => x !== "")
 
-          const pr = await github.rest.pulls.get({
+          const responseGetPr = await github.rest.pulls.get({
             owner: context.repo.owner,
             repo: context.repo.repo,
             pull_number: ${{ inputs.pull-request-number }}
           })
+          if (responseGetPr.status !== 200) {
+            throw new Error(`Failed to get PR. Status is ${response.status}`)
+          }
+          const pr = responseGetPr.data
           console.log(pr);
           console.log(pr.user.login);
 
