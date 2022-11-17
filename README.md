@@ -12,3 +12,4 @@ Embed in your github action yaml.
           pull-request-number: {{ SET TARGET PR NUMBER }}
 ```
 
+test
