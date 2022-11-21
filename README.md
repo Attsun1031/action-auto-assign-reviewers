@@ -7,7 +7,7 @@ Embed in your github action yaml.
 ```yaml
       - name: Auto assign reviewers
         id: auto_assign
-        uses: Attsun1031/action-auto-assign-reviewers@v3
+        uses: Attsun1031/action-auto-assign-reviewers@v4
         with:
           pull-request-number: {{ SET TARGET PR NUMBER }}
 ```
