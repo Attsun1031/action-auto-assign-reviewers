@@ -29,7 +29,7 @@ runs:
           }
           const pr = responseGetPr.data
           console.log(pr);
-          if (pr.user !== null) {
+          if (pr.user !== null && pr.user.login !== null && pr.user.login !== undefined) {
             // Ignore PR author
             ignoreUsers.push(pr.user.login)
           }
@@ -49,8 +49,12 @@ runs:
           const commits = response.data
           const reviewerLogins = []
           for (const cm of commits) {
+            if (cm.author === undefined || cm.author === null) {
+              continue
+            }
+
             const commiter = cm.author.login
-            if (cm.author === undefined || cm.author === null || commiter === undefined || commiter === null) {
+            if (commiter === undefined || commiter === null) {
               continue
             }
 
